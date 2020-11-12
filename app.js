@@ -20,8 +20,10 @@ connection.connect(function(err) {
     runPrompt();
 });
 
+// Run application
 async function runPrompt() {
 
+    // Main menu of node application
     function menu() {
         inquirer.prompt([
             {
@@ -42,7 +44,7 @@ async function runPrompt() {
                     "Exit"
                 ]
             }
-        ]).then(function(data) {
+        ]).then(function(data) {    // Input choices basic function mapping
             if (data.menu === "View All Employees") return viewAllEmployees();
             if (data.menu === "View All Employees By Department") return viewAllDep();
             if (data.menu === "View All Employees By Manager") return viewAllManager();
@@ -57,6 +59,7 @@ async function runPrompt() {
         });
     };
 
+    // Show all employees
     function viewAllEmployees() {
         console.log("\nHere are some Employees\n");
         connection.query("SELECT * FROM employee", function(err, res) {
@@ -82,6 +85,7 @@ async function runPrompt() {
         })
     };
 
+    // Show all employees according to department
     function viewAllDep() {
         console.log("\nHere are some Departments\n");
         connection.query("SELECT * FROM department", function(err, res) {
@@ -92,22 +96,27 @@ async function runPrompt() {
         })
     };
 
+    // Show all employees according to their manager
     function viewAllManager() {
         console.log("\nHere are some Managers\n");
     };
 
+    // Add employees to departments or assign to manager
     function addEmployee() {
         console.log("\nAdding Employee\n");
     };
 
+    // Remove employees from the database
     function removeEmployee() {
         console.log("\nRemoving Employee\n");
     };
 
+    // Update employee role (ie promotion/demotion etc)
     function updateRole() {
         console.log("\nUpdating Role\n");
     };
 
+    // Update manager (assign new employee to manager role)
     function updateManager() {
         console.log("\nUpdating Managers\n");
     };
@@ -116,18 +125,22 @@ async function runPrompt() {
         console.log("\nSee all the Roles\n");
     };
 
+    // Search through departments and make changes from there
     function viewAllDepartments() {
         console.log("\nSee all the Departments\n");
     };
 
+    // Show all managers and view/update info from there
     function viewAllManagers() {
         console.log("\nSee all the Managers\n");
     };
 
+    // Leave the application
     function exit() {
         console.log("\nGet Outta Here!\n")
         connection.end();
     };
 
+    // Call the initial application
     menu();
 }
