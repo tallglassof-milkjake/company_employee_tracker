@@ -58,47 +58,75 @@ async function runPrompt() {
     };
 
     function viewAllEmployees() {
-        console.log("Here are some Employees");
+        console.log("\nHere are some Employees\n");
+        connection.query("SELECT * FROM employee", function(err, res) {
+            if (err) throw err;
+
+            console.table(res);
+            inquirer.prompt([
+                {
+                    type: "list",
+                    message: "What Next?",
+                    name: "next",
+                    choices: [
+                        "Return",
+                        "Add Employee",
+                        "Remove Employee"
+                    ]
+                }
+            ]).then(function(data) {
+                if (data.next === "Return") return menu();
+                if (data.next === "Add Employee") return addEmployee();
+                if (data.next === "Remove Employee") return removeEmployee();
+            })
+        })
     };
 
     function viewAllDep() {
-        console.log("Here are some Departments");
+        console.log("\nHere are some Departments\n");
+        connection.query("SELECT * FROM department", function(err, res) {
+            if (err) throw err;
+
+            console.table(res);
+
+        })
     };
 
     function viewAllManager() {
-        console.log("Here are some Managers");
+        console.log("\nHere are some Managers\n");
     };
 
     function addEmployee() {
-        console.log("Adding Employee");
+        console.log("\nAdding Employee\n");
     };
 
     function removeEmployee() {
-        console.log("Removing Employee");
+        console.log("\nRemoving Employee\n");
     };
 
     function updateRole() {
-        console.log("Updating Role");
+        console.log("\nUpdating Role\n");
     };
 
     function updateManager() {
-        console.log("Updating Managers");
+        console.log("\nUpdating Managers\n");
     };
 
     function viewAllRoles() {
-        console.log("See all the Roles");
+        console.log("\nSee all the Roles\n");
     };
 
     function viewAllDepartments() {
-        console.log("See all the Departments");
+        console.log("\nSee all the Departments\n");
     };
 
     function viewAllManagers() {
-        console.log("See all the Managers");
+        console.log("\nSee all the Managers\n");
     };
 
     function exit() {
-        console.log("Get Outta Here!")
+        console.log("\nGet Outta Here!\n")
+        connection.end();
     };
 
     menu();
