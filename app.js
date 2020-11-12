@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
     host: "localhost",
     port: "3306",
     user: "root",
-    password: "",
+    password: "qwerty1234",
     database: "employee_db",
 });
 
@@ -19,8 +19,6 @@ connection.connect(function(err) {
 
     runPrompt();
 });
-
-runPrompt();
 
 async function runPrompt() {
 
@@ -40,7 +38,8 @@ async function runPrompt() {
                     "Update Manager",
                     "View All Roles",
                     "View All Departments",
-                    "View All Managers"
+                    "View All Managers",
+                    "Exit"
                 ]
             }
         ]).then(function(data) {
@@ -53,7 +52,8 @@ async function runPrompt() {
             if (data.menu === "Update Manager") return updateManager();
             if (data.menu === "View All Roles") return viewAllRoles();
             if (data.menu === "View All Departments") return viewAllDepartments();
-            if (data.menu === "View All Managers") return viewAllManagers();        
+            if (data.menu === "View All Managers") return viewAllManagers();
+            if (data.menu === "Exit") return exit();        
         });
     };
 
@@ -95,6 +95,10 @@ async function runPrompt() {
 
     function viewAllManagers() {
         console.log("See all the Managers");
+    };
+
+    function exit() {
+        console.log("Get Outta Here!")
     };
 
     menu();
