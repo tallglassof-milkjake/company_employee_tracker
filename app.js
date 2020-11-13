@@ -72,13 +72,13 @@ async function runPrompt() {
                     message: "What Next?",
                     name: "next",
                     choices: [
-                        "Return",
+                        "Go Back",
                         "Add Employee",
                         "Remove Employee"
                     ]
                 }
             ]).then(function(data) {
-                if (data.next === "Return") return menu();
+                if (data.next === "Go Back") return menu();
                 if (data.next === "Add Employee") return addEmployee();
                 if (data.next === "Remove Employee") return removeEmployee();
             })
@@ -206,6 +206,53 @@ async function runPrompt() {
     // Add employees to departments or assign to manager
     function addEmployee() {
         console.log("\nAdding Employee\n");
+
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "firstName",
+                message: "First Name"
+            },
+            {
+                type: "input",
+                name: "lastName",
+                message: "Last Name"
+            },
+            {
+                type: "input",
+                name: "department",
+                message: "Department ID"
+            },
+            {
+                type: "input",
+                name: "manager",
+                message: "Manager ID"
+            }
+        ]).then(function(data) {
+            connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${data.firstName}', '${data.lastName}', '${data.department}', '${data.manager}')`, 
+                function(err, res) {
+                    if (err) throw err;
+
+                    console.log(`${data.firstName} ${data.lastName} has been added to department ${data.department}`);
+
+                    inquirer.prompt([
+                        {
+                            type: "list",
+                            message: "What Next?",
+                            name: "next",
+                            choices: [
+                                "Go Back",
+                                "View Employees",
+                                "Add Another Employee"
+                            ]
+                        }
+                    ]).then(function(data) {
+                        if (data.next === "Go Back") return menu();
+                        if (data.next === "View Employees") return viewAllEmployees();
+                        if (data.next === "Add Another Employee") return addEmployee();
+                    })
+                });
+        })
     };
 
     // Remove employees from the database
