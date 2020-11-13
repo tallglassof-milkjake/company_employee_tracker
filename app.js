@@ -96,22 +96,55 @@ async function runPrompt() {
                 name: "department",
                 choices: [
                     "Finance",
-                    "legal",
+                    "Legal",
                     "HR",
                     "Sales",
                     "Go Back"
                 ]
             }
         ]).then(function(data) {
+            // FINANCE DEPT
             if (data.department === "Finance") 
                 return connection.query(
-                    "SELECT employee.first_name, employee.last_name, department.department_name FROM employee, department WHERE employee.role_id = employee.role_id AND department.department_name = 'Finance'", function(err, res) {
+                    "SELECT employee.first_name, employee.last_name, department.department_name FROM employee, department WHERE department.id = employee.role_id AND department.department_name = 'Finance'", 
+                    function(err, res) {
                         if (err) throw err;
-
                         
                         console.table(res);
+                        whatNext();
                     });
-                
+            // LEGAL DEPT
+            if (data.department === "Legal")
+                return connection.query(
+                    "SELECT employee.first_name, employee.last_name, department.department_name FROM employee, department WHERE department.id = employee.role_id AND department.department_name = 'Legal'", 
+                    function(err, res) {
+                        if (err) throw err;
+
+                        console.table(res);
+                        whatNext();
+                    });
+            // HR DEPT
+            if (data.department === "HR")
+                return connection.query(
+                    "SELECT employee.first_name, employee.last_name, department.department_name FROM employee, department WHERE department.id = employee.role_id AND department.department_name = 'HR'", 
+                    function(err, res) {
+                        if (err) throw err;
+
+                        console.table(res);
+                        whatNext();
+                    });
+            // SALES DEPT
+            if (data.department === "Sales")
+                return connection.query(
+                    "SELECT employee.first_name, employee.last_name, department.department_name FROM employee, department WHERE department.id = employee.role_id AND department.department_name = 'Sales'", 
+                    function(err, res) {
+                        if (err) throw err;
+
+                        console.table(res);
+                        whatNext();
+                    });
+            // GO BACK
+            if (data.department === "Go Back") return menu();
         });
         
     };
@@ -119,6 +152,55 @@ async function runPrompt() {
     // Show all employees according to their manager
     function viewAllManager() {
         console.log("\nHere are some Managers\n");
+
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Select Manager",
+                name: "managers",
+                choices: [
+                    "Finance Manager",
+                    "Legal Manager",
+                    "HR Manager",
+                    "Sales Manager",
+                    "Go Back"
+                ]
+            }
+        ]).then(function(data) {
+            if (data.managers === "Finance Manager")
+                return connection.query("SELECT employee.first_name, employee.last_name, department.department_name, employee.manager_id FROM employee, department, employee_role WHERE employee.manager_id = employee_role.id AND employee_role.id = 1",
+                function(err, res) {
+                    if (err) throw err;
+
+                    console.table(res);
+                    back();
+                });
+            if (data.managers === "Legal Manager")
+                return connection.query("SELECT employee.first_name, employee.last_name, department.department_name, employee.manager_id FROM employee, department, employee_role WHERE employee.manager_id = employee_role.id AND department.department_name = 'Legal Manager'",
+                function(err, res) {
+                    if (err) throw err;
+
+                    console.table(res);
+                    back();
+                });
+            if (data.managers === "HR Manager")
+                return connection.query("SELECT employee.first_name, employee.last_name, department.department_name, employee.manager_id FROM employee, department, employee_role WHERE employee.manager_id = employee_role.id AND department.department_name = 'HR Manager'",
+                function(err, res) {
+                    if (err) throw err;
+
+                    console.table(res);
+                    back();
+                });
+            if (data.managers === "Sales Manager")
+                return connection.query("SELECT employee.first_name, employee.last_name, department.department_name, employee.manager_id FROM employee, department, employee_role WHERE employee.manager_id = employee_role.id AND department.department_name = 'Sales Manager'",
+                function(err, res) {
+                    if (err) throw err;
+
+                    console.table(res);
+                    back();
+                });
+            if (data.managers === "Go Back") return menu();
+        });
     };
 
     // Add employees to departments or assign to manager
@@ -159,6 +241,42 @@ async function runPrompt() {
     function exit() {
         console.log("\nGet Outta Here!\n")
         connection.end();
+    };
+    
+    async function whatNext() {
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "What Now?",
+                name: "next",
+                choices: [
+                    "Add Employee to Department",
+                    "Remove Employee from Department",
+                    "Exit"
+                ]
+            }
+        ]).then(function(data) {
+            if (data.next === "Add Employee to Department") return addEmployee();
+            if (data.next === "Remove Employee from Department") return removeEmployee();
+            if (data.next === "Exit") return menu();
+        });
+    };
+
+    async function back() {
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Go Back?",
+                name: "back",
+                choices: [
+                    "Go Back",
+                    "Main Menu"
+                ]
+            }
+        ]).then(function(data) {
+            if (data.back === "Go Back") return viewAllManager();
+            if (data.back === "Main Menu") return menu();
+        });
     };
 
     // Call the initial application
