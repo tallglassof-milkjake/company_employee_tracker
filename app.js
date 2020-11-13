@@ -88,12 +88,32 @@ async function runPrompt() {
     // Show all employees according to department
     function viewAllDep() {
         console.log("\nHere are some Departments\n");
-        connection.query("SELECT * FROM department", function(err, res) {
-            if (err) throw err;
 
-            console.table(res);
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Select Department",
+                name: "department",
+                choices: [
+                    "Finance",
+                    "legal",
+                    "HR",
+                    "Sales",
+                    "Go Back"
+                ]
+            }
+        ]).then(function(data) {
+            if (data.department === "Finance") 
+                return connection.query(
+                    "SELECT employee.first_name, employee.last_name, department.department_name FROM employee, department WHERE employee.role_id = employee.role_id AND department.department_name = 'Finance'", function(err, res) {
+                        if (err) throw err;
 
-        })
+                        
+                        console.table(res);
+                    });
+                
+        });
+        
     };
 
     // Show all employees according to their manager
