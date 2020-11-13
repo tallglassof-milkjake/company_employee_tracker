@@ -168,7 +168,7 @@ async function runPrompt() {
             }
         ]).then(function(data) {
             if (data.managers === "Finance Manager")
-                return connection.query("SELECT employee.first_name, employee.last_name, department.department_name, employee.manager_id FROM employee, department, employee_role WHERE employee.manager_id = employee_role.id AND employee_role.id = 1",
+                return connection.query("SELECT employee.first_name, employee.last_name, department.department_name, employee.manager_id FROM employee, department, employee_role WHERE employee.manager_id = employee_role.id = department.id AND employee_role.id = 1",
                 function(err, res) {
                     if (err) throw err;
 
@@ -176,7 +176,7 @@ async function runPrompt() {
                     back();
                 });
             if (data.managers === "Legal Manager")
-                return connection.query("SELECT employee.first_name, employee.last_name, department.department_name, employee.manager_id FROM employee, department, employee_role WHERE employee.manager_id = employee_role.id AND department.department_name = 'Legal Manager'",
+                return connection.query("SELECT employee.first_name, employee.last_name, department.department_name, employee.manager_id FROM employee, department, employee_role WHERE employee.manager_id = employee_role.id = department.id AND employee_role.id = 2",
                 function(err, res) {
                     if (err) throw err;
 
@@ -184,7 +184,7 @@ async function runPrompt() {
                     back();
                 });
             if (data.managers === "HR Manager")
-                return connection.query("SELECT employee.first_name, employee.last_name, department.department_name, employee.manager_id FROM employee, department, employee_role WHERE employee.manager_id = employee_role.id AND department.department_name = 'HR Manager'",
+                return connection.query("SELECT employee.first_name, employee.last_name, department.department_name, employee.manager_id FROM employee, department, employee_role WHERE employee.manager_id = employee_role.id = department.id AND employee_role.id = 3",
                 function(err, res) {
                     if (err) throw err;
 
@@ -192,7 +192,7 @@ async function runPrompt() {
                     back();
                 });
             if (data.managers === "Sales Manager")
-                return connection.query("SELECT employee.first_name, employee.last_name, department.department_name, employee.manager_id FROM employee, department, employee_role WHERE employee.manager_id = employee_role.id AND department.department_name = 'Sales Manager'",
+                return connection.query("SELECT employee.first_name, employee.last_name, department.department_name, employee.manager_id FROM employee, department, employee_role WHERE employee.manager_id = employee_role.id = department.id AND employee_role.id = 4",
                 function(err, res) {
                     if (err) throw err;
 
