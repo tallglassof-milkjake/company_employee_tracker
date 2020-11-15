@@ -3,6 +3,7 @@ const express = require("express");
 const table = require("console.table");
 const path = require("path");
 const mysql = require("mysql");
+let colors = require("colors");
 
 const app = express();
 
@@ -259,26 +260,64 @@ async function runPrompt() {
     function removeEmployee() {
         console.log("\nRemoving Employee\n");
 
-        connection.query("SELECT first_name, last_name, role_id FROM employee", function(err, res) {
+        connection.query("SELECT id, first_name, last_name, role_id FROM employee", function(err, res) {
             if (err) throw err;
 
-            let employees = res;
-            let employeeToRemove = JSON.stringify(employees)
-            let removal = JSON.parse(employeeToRemove);
+            inquirer.prompt([
+                {
+                    type: "list",
+                    message: "Select Employee",
+                    name: "removal",
+                    loop: false,
+                    choices: 
+                        function() {
+                            let employeeArray = [];
+                            for (let i = 0; i < res.length; i++) {
+                                employeeArray.push(`ID : ${res[i].id} ---- Role ID: ${res[i].role_id} ---- Name: ${res[i].first_name} ${res[i].last_name}`);
+                            }
+                            return employeeArray;
+                        },
+                }
 
-            removal.forEach(function(data) {
                 
-                // console.log(data.first_name);
-                inquirer.prompt([
-                    {
-                        type: "list",
-                        message: "Select Employee",
-                        name: "removal",
-                        choices: [
-                            `${data.first_name} ${data.last_name}`
-                        ]
-                    }
-                ])
+            ]).then(function(data) {
+                console.log(data);
+
+                let deleteEmployee = JSON.stringify(data.removal);
+
+                console.log(deleteEmployee);
+
+                let fired = deleteEmployee.slice(5, 8);
+
+                console.log(fired);
+
+                if (data.removal === data.removal) {
+                    connection.query("DELETE FROM employee WHERE id = " + fired, function(err, res) {
+                        if (err) throw err;
+                
+        
+                        console.log(res);
+                        console.log(`${data.removal} HAS BEEN REMOVED`);
+
+                        inquirer.prompt([
+                            {
+                                type: "list",
+                                message: "What Next?",
+                                name: "next",
+                                choices: [
+                                    "Go Back",
+                                    "View Employees",
+                                    "Add Another Employee"
+                                ]
+                            }
+                        ]).then(function(data) {
+                            if (data.next === "Go Back") return menu();
+                            if (data.next === "View Employees") return viewAllEmployees();
+                            if (data.next === "Remove Another Employee") return removeEmployee();
+                        });
+                    });
+
+                };
             });
         });
     };
