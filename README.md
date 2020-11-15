@@ -12,6 +12,8 @@
 
 * **[Testing](#Testing)**
 
+* **[Screenshots](#Screenshots)**
+
 * **[Questions](#Questions)**
 
 
@@ -34,6 +36,13 @@ NONE
 
 NONE
 
+### Screenshots
+
+!(Demo Video)[Assets/demo_vid.mp4]
+
+!(Menu View)[Assets/menu.png]
+
+!(View Employees)[Assets/view.png]
 
 ### Questions
 
