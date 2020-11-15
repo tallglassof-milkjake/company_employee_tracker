@@ -38,7 +38,7 @@ NONE
 
 ### Screenshots
 
-![Demo Video](Assets/demo_vid.mp4)
+![Demo Video](Assets/demo_gif.gif)
 
 ![Menu View](Assets/menu.png)
 
