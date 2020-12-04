@@ -24,7 +24,12 @@ A basic Node.js application to view, add and remove employee's and assign them i
 
 ### Installation
 
-Copy the application onto your local machine and on the command line, run npm install inquirer, npm install mysql and npm install console.table.
+Copy the application onto your local machine. 
+Go to package.json and enter root password for your local database instance. 
+Open the schema 'employee_db.sql' in workbench (or your prefered system) and run the database.
+Then open the seeds.sql and run to populate the database.
+Then, in the command line, run npm install inquirer, npm install mysql and npm install console.table.
+Start the Application via 'node app.js'
 
 
 ### Constributions
